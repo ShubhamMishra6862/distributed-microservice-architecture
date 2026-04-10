@@ -5,7 +5,7 @@ import com.pm.appointmentservice.dto.AppointmentResponseDTO;
 import com.pm.appointmentservice.dto.UpdateStatusDTO;
 import com.pm.appointmentservice.exception.AppointmentNotFoundException;
 import com.pm.appointmentservice.exception.PatientValidationException;
-import com.pm.appointmentservice.grpc.PatientValidationGrpcClient;
+import com.pm.appointmentservice.grpc.PatientValidationClient;
 import com.pm.appointmentservice.kafka.KafkaProducer;
 import com.pm.appointmentservice.mapper.AppointmentMapper;
 import com.pm.appointmentservice.model.Appointment;
@@ -20,13 +20,13 @@ public class AppointmentService {
 
   private final AppointmentRepository appointmentRepository;
   private final KafkaProducer kafkaProducer;
-  private final PatientValidationGrpcClient patientValidationGrpcClient;
+  private final PatientValidationClient patientValidationClient;
 
   public AppointmentService(AppointmentRepository appointmentRepository,
-      KafkaProducer kafkaProducer, PatientValidationGrpcClient patientValidationGrpcClient) {
+      KafkaProducer kafkaProducer, PatientValidationClient patientValidationClient) {
     this.appointmentRepository = appointmentRepository;
     this.kafkaProducer = kafkaProducer;
-    this.patientValidationGrpcClient = patientValidationGrpcClient;
+    this.patientValidationClient = patientValidationClient;
   }
 
   public List<AppointmentResponseDTO> getAppointments() {
@@ -71,7 +71,7 @@ public class AppointmentService {
   }
 
   private void validatePatient(UUID patientId) {
-    boolean exists = patientValidationGrpcClient.validatePatient(patientId);
+    boolean exists = patientValidationClient.validatePatient(patientId);
     if (!exists) {
       throw new PatientValidationException("Patient not found or invalid: " + patientId);
     }

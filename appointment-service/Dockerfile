@@ -1,12 +1,22 @@
-FROM openjdk:21-jdk-slim
+FROM maven:3.9.9-eclipse-temurin-21 AS builder
 
 WORKDIR /app
 
 COPY pom.xml .
+
+RUN mvn dependency:go-offline -B
+
 COPY src ./src
 
-RUN apt-get update && apt-get install -y maven && mvn clean package -DskipTests
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:21-jre-alpine AS runner
+
+WORKDIR /app
+
+COPY --from=builder ./app/target/appointment-service-0.0.1-SNAPSHOT.jar ./app.jar
 
 EXPOSE 4002
+EXPOSE 9002
 
-CMD ["java", "-jar", "target/appointment-service-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

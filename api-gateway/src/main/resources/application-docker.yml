@@ -2,8 +2,6 @@ server:
   port: 4004
 
 spring:
-  profiles:
-    active: docker
   cloud:
     gateway:
       routes:
