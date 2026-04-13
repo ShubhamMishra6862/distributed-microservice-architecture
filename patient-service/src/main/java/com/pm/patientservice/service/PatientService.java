@@ -20,13 +20,16 @@ public class PatientService {
   private final PatientRepository patientRepository;
   private final BillingServiceGrpcClient billingServiceGrpcClient;
   private final KafkaProducer kafkaProducer;
+  private final com.pm.patientservice.search.PatientSearchService patientSearchService;
 
   public PatientService(PatientRepository patientRepository,
       BillingServiceGrpcClient billingServiceGrpcClient,
-      KafkaProducer kafkaProducer) {
+      KafkaProducer kafkaProducer,
+      com.pm.patientservice.search.PatientSearchService patientSearchService) {
     this.patientRepository = patientRepository;
     this.billingServiceGrpcClient = billingServiceGrpcClient;
     this.kafkaProducer = kafkaProducer;
+    this.patientSearchService = patientSearchService;
   }
 
   public List<PatientResponseDTO> getPatients() {
@@ -49,6 +52,7 @@ public class PatientService {
         newPatient.getName(), newPatient.getEmail());
 
     kafkaProducer.sendEvent(newPatient);
+    patientSearchService.save(newPatient);
 
     return PatientMapper.toDTO(newPatient);
   }
@@ -72,11 +76,18 @@ public class PatientService {
     patient.setDateOfBirth(LocalDate.parse(patientRequestDTO.getDateOfBirth()));
 
     Patient updatedPatient = patientRepository.save(patient);
+    patientSearchService.save(updatedPatient);
     return PatientMapper.toDTO(updatedPatient);
   }
 
   public void deletePatient(UUID id) {
     patientRepository.deleteById(id);
+    patientSearchService.delete(id);
+  }
+
+  public com.pm.patientservice.dto.PatientSearchResponse searchPatients(
+      com.pm.patientservice.dto.PatientSearchCriteria criteria) {
+    return patientSearchService.search(criteria);
   }
 
   public PatientResponseDTO getPatient(UUID id) {

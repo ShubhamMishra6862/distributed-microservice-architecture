@@ -12,7 +12,6 @@ spring:
           filters:
             - StripPrefix=1
 
-        # Route for /api/patients/** to patient-service
         - id: patient-service-route
           uri: http://patient-service:4000
           predicates:
@@ -21,7 +20,6 @@ spring:
             - StripPrefix=1
             - JwtValidation
 
-        # Route for /api/appointments/** to appointment-service
         - id: appointment-service-route
           uri: http://appointment-service:4002
           predicates:
@@ -30,29 +28,86 @@ spring:
             - StripPrefix=1
             - JwtValidation
 
-        # Route for /api/docs/patients to patient-service /v3/api-docs
-        - id: api-docs-patient-route
-          uri: http://patient-service:4000
+        - id: billing-service-route
+          uri: http://billing-service:4003
           predicates:
-            - Path=/api-docs/patients
+            - Path=/api/billing/**
           filters:
-            - RewritePath=/api-docs/patients,/v3/api-docs
+            - StripPrefix=1
+            - JwtValidation
 
-        - id: api-docs-auth-route
+        - id: analytics-service-route
+          uri: http://analytics-service:4006
+          predicates:
+            - Path=/api/analytics/**
+          filters:
+            - StripPrefix=1
+            - JwtValidation
+
+        # API Docs routes for each service
+        - id: api-docs-auth
           uri: http://auth-service:4005
           predicates:
-            - Path=/api-docs/auth
+            - Path=/v3/api-docs/auth
           filters:
-            - RewritePath=/api-docs/auth,/v3/api-docs
+            - RewritePath=/v3/api-docs/auth,/v3/api-docs
 
-        # Route for /api/docs/appointments to appointment-service /v3/api-docs
-        - id: api-docs-appointment-route
+        - id: api-docs-patient
+          uri: http://patient-service:4000
+          predicates:
+            - Path=/v3/api-docs/patient
+          filters:
+            - RewritePath=/v3/api-docs/patient,/v3/api-docs
+
+        - id: api-docs-appointment
           uri: http://appointment-service:4002
           predicates:
-            - Path=/api-docs/appointments
+            - Path=/v3/api-docs/appointment
           filters:
-            - RewritePath=/api-docs/appointments,/v3/api-docs
+            - RewritePath=/v3/api-docs/appointment,/v3/api-docs
+
+        - id: api-docs-billing
+          uri: http://billing-service:4003
+          predicates:
+            - Path=/v3/api-docs/billing
+          filters:
+            - RewritePath=/v3/api-docs/billing,/v3/api-docs
+
+        - id: api-docs-analytics
+          uri: http://analytics-service:4006
+          predicates:
+            - Path=/v3/api-docs/analytics
+          filters:
+            - RewritePath=/v3/api-docs/analytics,/v3/api-docs
+
+# SpringDoc OpenAPI configuration for gateway aggregation
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    operations-sorter: method
+    tagsSorter: alpha
+    disable-swagger-default-url: true
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - name: Auth Service
+        url: /v3/api-docs/auth
+      - name: Patient Service
+        url: /v3/api-docs/patient
+      - name: Appointment Service
+        url: /v3/api-docs/appointment
+      - name: Billing Service
+        url: /v3/api-docs/billing
+      - name: Analytics Service
+        url: /v3/api-docs/analytics
+  use-fqn: true
 
 auth:
   service:
     url: http://auth-service:4005
+
+
+

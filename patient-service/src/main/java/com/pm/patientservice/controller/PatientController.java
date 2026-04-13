@@ -2,6 +2,8 @@ package com.pm.patientservice.controller;
 
 import com.pm.patientservice.dto.PatientRequestDTO;
 import com.pm.patientservice.dto.PatientResponseDTO;
+import com.pm.patientservice.dto.PatientSearchCriteria;
+import com.pm.patientservice.dto.PatientSearchResponse;
 import com.pm.patientservice.dto.validators.CreatePatientValidationGroup;
 import com.pm.patientservice.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -73,5 +76,12 @@ public class PatientController {
   public ResponseEntity<PatientResponseDTO> getPatient(@PathVariable UUID id) {
     PatientResponseDTO patient = patientService.getPatient(id);
     return ResponseEntity.ok().body(patient);
+  }
+
+  @GetMapping("/search")
+  @Operation(summary = "Search Patients")
+  public ResponseEntity<PatientSearchResponse> searchPatients(
+      @ModelAttribute PatientSearchCriteria criteria) {
+    return ResponseEntity.ok().body(patientService.searchPatients(criteria));
   }
 }
