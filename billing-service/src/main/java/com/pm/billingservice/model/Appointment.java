@@ -5,9 +5,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Data
 @Entity
 @Table(name = "appointments")
 public class Appointment {
@@ -24,8 +27,6 @@ public class Appointment {
 
   private LocalDateTime receivedAt;
 
-  // Constructors, getters, setters
-
   public Appointment() {}
 
   public Appointment(UUID appointmentId, UUID patientId, String eventType) {
@@ -33,45 +34,5 @@ public class Appointment {
     this.patientId = patientId;
     this.eventType = eventType;
     this.receivedAt = LocalDateTime.now();
-  }
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  public UUID getAppointmentId() {
-    return appointmentId;
-  }
-
-  public void setAppointmentId(UUID appointmentId) {
-    this.appointmentId = appointmentId;
-  }
-
-  public UUID getPatientId() {
-    return patientId;
-  }
-
-  public void setPatientId(UUID patientId) {
-    this.patientId = patientId;
-  }
-
-  public String getEventType() {
-    return eventType;
-  }
-
-  public void setEventType(String eventType) {
-    this.eventType = eventType;
-  }
-
-  public LocalDateTime getReceivedAt() {
-    return receivedAt;
-  }
-
-  public void setReceivedAt(LocalDateTime receivedAt) {
-    this.receivedAt = receivedAt;
   }
 }

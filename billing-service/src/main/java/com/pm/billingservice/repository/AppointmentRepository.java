@@ -8,8 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, UUID> {
-  
-  Optional<Appointment> findByAppointmentId(UUID appointmentId);
-  
-  boolean existsByAppointmentId(UUID appointmentId);
+  boolean existsByAppointmentIdAndPatientId(UUID appointmentId, UUID patientId);
 }

@@ -2,9 +2,7 @@ package com.pm.billingservice.mapper;
 
 import com.pm.billingservice.dto.BillRequestDTO;
 import com.pm.billingservice.dto.BillResponseDTO;
-import com.pm.billingservice.dto.BillingAppointmentResponseDTO;
 import com.pm.billingservice.model.Bill;
-import com.pm.billingservice.model.BillingAppointment;
 
 public final class BillingMapper {
 
@@ -35,15 +33,6 @@ public final class BillingMapper {
     responseDTO.setStatus(bill.getStatus());
     responseDTO.setCreatedAt(bill.getCreatedAt());
     responseDTO.setUpdatedAt(bill.getUpdatedAt());
-    return responseDTO;
-  }
-
-  public static BillingAppointmentResponseDTO toDTO(
-      BillingAppointment billingAppointment) {
-    BillingAppointmentResponseDTO responseDTO =
-        new BillingAppointmentResponseDTO();
-    responseDTO.setAppointmentId(billingAppointment.getAppointmentId());
-    responseDTO.setPatientId(billingAppointment.getPatientId());
     return responseDTO;
   }
 }

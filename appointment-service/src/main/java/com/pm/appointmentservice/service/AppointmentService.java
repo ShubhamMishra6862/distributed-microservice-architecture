@@ -9,7 +9,6 @@ import com.pm.appointmentservice.grpc.PatientValidationClient;
 import com.pm.appointmentservice.kafka.KafkaProducer;
 import com.pm.appointmentservice.mapper.AppointmentMapper;
 import com.pm.appointmentservice.model.Appointment;
-import com.pm.appointmentservice.model.AppointmentStatus;
 import com.pm.appointmentservice.repository.AppointmentRepository;
 import java.util.List;
 import java.util.UUID;

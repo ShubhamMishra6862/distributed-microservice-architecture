@@ -7,9 +7,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Data
 @Entity
 @Table(name = "appointments")
 public class Appointment {
@@ -41,52 +44,8 @@ public class Appointment {
     this.updatedAt = LocalDateTime.now();
   }
 
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  public UUID getPatientId() {
-    return patientId;
-  }
-
-  public void setPatientId(UUID patientId) {
-    this.patientId = patientId;
-  }
-
-  public String getDetails() {
-    return details;
-  }
-
-  public void setDetails(String details) {
-    this.details = details;
-  }
-
-  public AppointmentStatus getStatus() {
-    return status;
-  }
-
   public void setStatus(AppointmentStatus status) {
     this.status = status;
     this.updatedAt = LocalDateTime.now();
-  }
-
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
-
-  public LocalDateTime getUpdatedAt() {
-    return updatedAt;
-  }
-
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
   }
 }

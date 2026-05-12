@@ -1,11 +1,15 @@
+
 package com.pm.billingservice.dto;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.UUID;
 
+@Data
 public class BillRequestDTO {
 
   @NotNull(message = "Patient ID is required")
@@ -23,44 +27,4 @@ public class BillRequestDTO {
 
   @NotBlank(message = "Status is required")
   private String status;
-
-  public UUID getPatientId() {
-    return patientId;
-  }
-
-  public void setPatientId(UUID patientId) {
-    this.patientId = patientId;
-  }
-
-  public UUID getAppointmentId() {
-    return appointmentId;
-  }
-
-  public void setAppointmentId(UUID appointmentId) {
-    this.appointmentId = appointmentId;
-  }
-
-  public BigDecimal getAmount() {
-    return amount;
-  }
-
-  public void setAmount(BigDecimal amount) {
-    this.amount = amount;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public String getStatus() {
-    return status;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
-  }
 }

@@ -22,7 +22,7 @@ public class PatientSearchMapper {
     dto.setEmail(document.getEmail());
     dto.setAddress(document.getAddress());
     if (document.getDateOfBirth() != null) {
-      dto.setDateOfBirth(document.getDateOfBirth().toString());
+      dto.setDateOfBirth(document.getDateOfBirth());
     }
     return dto;
   }

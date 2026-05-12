@@ -8,7 +8,7 @@ spring:
         - id: auth-service-route
           uri: http://auth-service:4005
           predicates:
-            - Path=/auth/**
+            - Path=/api/auth/**
           filters:
             - StripPrefix=1
 
@@ -31,15 +31,7 @@ spring:
         - id: billing-service-route
           uri: http://billing-service:4003
           predicates:
-            - Path=/api/billing/**
-          filters:
-            - StripPrefix=1
-            - JwtValidation
-
-        - id: analytics-service-route
-          uri: http://analytics-service:4006
-          predicates:
-            - Path=/api/analytics/**
+            - Path=/api/bills/**
           filters:
             - StripPrefix=1
             - JwtValidation
@@ -69,9 +61,9 @@ spring:
         - id: api-docs-billing
           uri: http://billing-service:4003
           predicates:
-            - Path=/v3/api-docs/billing
+            - Path=/v3/api-docs/bills
           filters:
-            - RewritePath=/v3/api-docs/billing,/v3/api-docs
+            - RewritePath=/v3/api-docs/bills,/v3/api-docs
 
         - id: api-docs-analytics
           uri: http://analytics-service:4006
@@ -100,14 +92,8 @@ springdoc:
       - name: Appointment Service
         url: /v3/api-docs/appointment
       - name: Billing Service
-        url: /v3/api-docs/billing
-      - name: Analytics Service
-        url: /v3/api-docs/analytics
+        url: /v3/api-docs/bills
   use-fqn: true
-
-auth:
-  service:
-    url: http://auth-service:4005
 
 
 

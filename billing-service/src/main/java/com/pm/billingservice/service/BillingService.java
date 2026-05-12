@@ -1,13 +1,16 @@
 package com.pm.billingservice.service;
 
+import billing.BillingResponse;
 import com.pm.billingservice.dto.BillRequestDTO;
 import com.pm.billingservice.dto.BillResponseDTO;
 import com.pm.billingservice.exception.BillNotFoundException;
 import com.pm.billingservice.exception.InvalidBillingReferenceException;
 import com.pm.billingservice.mapper.BillingMapper;
+import com.pm.billingservice.model.Appointment;
 import com.pm.billingservice.model.Bill;
+import com.pm.billingservice.repository.AppointmentRepository;
 import com.pm.billingservice.repository.BillRepository;
-import com.pm.billingservice.repository.BillingAppointmentRepository;
+
 import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -16,12 +19,12 @@ import org.springframework.stereotype.Service;
 public class BillingService {
 
   private final BillRepository billRepository;
-  private final BillingAppointmentRepository billingAppointmentRepository;
+  private final AppointmentRepository appointmentRepository;
 
   public BillingService(BillRepository billRepository,
-      BillingAppointmentRepository billingAppointmentRepository) {
+                       AppointmentRepository appointmentRepository) {
     this.billRepository = billRepository;
-    this.billingAppointmentRepository = billingAppointmentRepository;
+      this.appointmentRepository = appointmentRepository;
   }
 
   public List<BillResponseDTO> getBills() {
@@ -59,9 +62,20 @@ public class BillingService {
         () -> new BillNotFoundException("Bill not found with ID: " + id));
   }
 
+  public List<BillResponseDTO> getBillByAppointmentId(UUID appointmentId) {
+    List<Bill> bills = billRepository.findByAppointmentId(appointmentId);
+    return bills.stream().map(BillingMapper::toDTO).toList();
+  }
+
+  public List<BillResponseDTO> getBillsByPatientId(UUID patientId) {
+    List<Bill> bills = billRepository.findByPatientId(patientId).stream()
+        .filter(bill -> bill.getPatientId().equals(patientId)).toList();
+    return bills.stream().map(BillingMapper::toDTO).toList();
+  }
+
   private void validateAppointmentOwnership(UUID appointmentId, UUID patientId) {
     boolean isValidAppointmentPatientPair =
-        billingAppointmentRepository.existsByAppointmentIdAndPatientId(
+        appointmentRepository.existsByAppointmentIdAndPatientId(
             appointmentId, patientId);
 
     if (!isValidAppointmentPatientPair) {
@@ -70,4 +84,5 @@ public class BillingService {
               + " and patient ID " + patientId);
     }
   }
+
 }
