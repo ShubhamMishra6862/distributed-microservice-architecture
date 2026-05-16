@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Healthcare Ecosystem API Documentation</title>
+
+    <!-- Swagger UI CSS -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
+</head>
+
+<body>
+<div id="swagger-ui"></div>
+
+<!-- Swagger UI JS -->
+<script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
+<script src="https://unpkg.com/swagger-ui-dist/swagger-ui-standalone-preset.js"></script>
+
+<script>
+    window.onload = () => {
+        window.ui = SwaggerUIBundle({
+            urls: [
+                { url: "specs/auth-service.json", name: "Auth Service" },
+                { url: "specs/patient-service.json", name: "Patient Service" },
+                { url: "specs/appointment-service.json", name: "Appointment Service" },
+                { url: "specs/billing-service.json", name: "Billing Service" }
+            ],
+
+            dom_id: '#swagger-ui',
+
+            deepLinking: true,
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+            ],
+
+            layout: "StandaloneLayout"
+        });
+    };
+</script>
+</body>
+</html>
