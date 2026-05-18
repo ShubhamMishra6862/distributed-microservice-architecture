@@ -39,15 +39,6 @@ spring:
             - StripPrefix=1
             - JwtValidation
 
-        # Route for /api/analytics/** to analytics-service
-        - id: analytics-service-route
-          uri: http://localhost:4006
-          predicates:
-            - Path=/api/analytics/**
-          filters:
-            - StripPrefix=1
-            - JwtValidation
-
         # Routes for API documentation
         - id: api-docs-auth-route
           uri: http://localhost:4005
@@ -76,13 +67,6 @@ spring:
             - Path=/api-docs/billing
           filters:
             - RewritePath=/api-docs/billing,/v3/api-docs
-
-        - id: api-docs-analytics-route
-          uri: http://localhost:4006
-          predicates:
-            - Path=/api-docs/analytics
-          filters:
-            - RewritePath=/api-docs/analytics,/v3/api-docs
 
 # SpringDoc OpenAPI configuration
 springdoc:
